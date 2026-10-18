@@ -16,7 +16,7 @@ import { safeStorage } from '../lib/safeStorage.js';
 import { SEED_VERSION, kegiatanSeed, kerjasamaSeed, publikasiSeed } from '../data/seed.js';
 import { auth } from './auth.js';
 
-const BASE = "http://localhost:8080"
+const BASE = "https://pui-backend-255264373167.asia-southeast2.run.app"
 export const isRemote = Boolean(BASE);
 
 export class ApiError extends Error {
