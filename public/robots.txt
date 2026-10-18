@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /masuk
+Disallow: /daftar-akun
+Disallow: /lupa-sandi

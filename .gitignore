@@ -1,0 +1,8 @@
+node_modules
+dist
+dev-dist
+*.log
+.env
+.env.local
+lighthouse-*.html
+.DS_Store

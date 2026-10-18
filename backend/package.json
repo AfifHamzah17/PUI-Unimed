@@ -1,0 +1,20 @@
+{
+  "name": "pui-api",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "API PUI Literasi dan Seni dalam Pendidikan (Cloud Run + Firestore + Cloud Storage)",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --env-file=.env --watch src/server.js",
+    "test": "node --test test/*.test.js",
+    "seed": "node scripts/seed.mjs"
+  },
+  "dependencies": {
+    "@google-cloud/firestore": "^7.11.0",
+    "@google-cloud/storage": "^7.14.0"
+  }
+}

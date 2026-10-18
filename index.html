@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>PUI Literasi dan Seni dalam Pendidikan | Universitas Negeri Medan</title>
+    <meta
+      name="description"
+      content="Pusat Unggulan IPTEK Literasi dan Seni dalam Pendidikan di bawah LPPM Universitas Negeri Medan: riset, publikasi jurnal, kegiatan, dan kerja sama sejak 2024."
+    />
+    <meta name="theme-color" content="#0a2018" />
+    <meta name="color-scheme" content="light dark" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:site_name" content="PUI Literasi dan Seni dalam Pendidikan" />
+    <meta property="og:title" content="PUI Literasi dan Seni dalam Pendidikan | UNIMED" />
+    <meta
+      property="og:description"
+      content="Riset literasi dan seni untuk pendidikan: jurnal, kegiatan, dan kerja sama dari Universitas Negeri Medan."
+    />
+    <meta property="og:image" content="/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+
+    <!-- Tema: dipasang sebelum cat pertama supaya mode gelap tidak berkedip. -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('pui:theme') || 'system';
+          var dark = t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Font dimuat tanpa memblokir render; tampilan awal memakai font sistem. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap"
+      />
+    </noscript>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ResearchOrganization",
+        "name": "Pusat Unggulan IPTEK Literasi dan Seni dalam Pendidikan",
+        "alternateName": "PUI Literasi dan Seni dalam Pendidikan",
+        "parentOrganization": { "@type": "CollegeOrUniversity", "name": "Universitas Negeri Medan" },
+        "foundingDate": "2024",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Jl. Willem Iskandar Pasar V, Medan Estate",
+          "addressRegion": "Sumatera Utara",
+          "postalCode": "20221",
+          "addressCountry": "ID"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Situs ini membutuhkan JavaScript untuk menampilkan konten.</noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

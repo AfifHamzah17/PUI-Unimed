@@ -1,0 +1,295 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Token warna
+   Palet "Tinta dan Daun": hijau hutan dari lambang UNIMED sebagai warna merek,
+   kuning matahari dari lambang yang sama sebagai SATU-SATUNYA aksen.
+   Semua abu-abu ditarik ke hijau (satu keluarga) agar tidak campur hangat/dingin.
+   ========================================================================== */
+@layer base {
+  :root {
+    color-scheme: light;
+    --paper: 241 244 239;      /* #F1F4EF latar halaman */
+    --surface: 250 252 249;    /* #FAFCF9 kartu */
+    --ink: 10 31 24;           /* #0A1F18 teks */
+    --muted: 74 96 86;         /* #4A6056 teks sekunder */
+    --line: 213 223 215;       /* #D5DFD7 garis */
+    --mist: 226 233 227;       /* #E2E9E3 isian halus */
+    --brand: 15 92 62;         /* #0F5C3E hijau hutan */
+    --brand-soft: 223 236 227;
+    --on-brand: 241 244 239;
+    --accent: 227 169 26;      /* #E3A91A kuning matahari */
+    --deep: 10 32 24;          /* #0A2018 hero dan footer */
+    --deep-2: 16 48 36;
+    --danger: 176 58 46;
+    --focus: 15 92 62;
+    --grain: 0.05;
+  }
+  .dark {
+    color-scheme: dark;
+    --paper: 9 19 16;
+    --surface: 15 29 24;
+    --ink: 233 240 235;
+    --muted: 156 177 166;
+    --line: 33 55 47;
+    --mist: 22 40 33;
+    --brand: 74 190 134;
+    --brand-soft: 17 46 36;
+    --on-brand: 5 14 11;
+    --accent: 232 180 42;
+    --deep: 5 14 11;
+    --deep-2: 12 34 26;
+    --danger: 232 118 104;
+    --focus: 232 180 42;
+    --grain: 0.07;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5.5rem;
+  }
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    text-rendering: optimizeLegibility;
+    min-height: 100dvh;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display text-ink;
+    text-wrap: balance;
+    letter-spacing: -0.012em;
+  }
+  p, li { text-wrap: pretty; }
+  ::selection { background: rgb(var(--accent) / 0.45); color: rgb(var(--ink)); }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--focus));
+    outline-offset: 3px;
+  }
+  .on-deep :focus-visible { outline-color: rgb(var(--accent)); }
+  main:focus { outline: none; }
+
+  /* Butiran halus: satu lapisan tetap yang tidak menangkap pointer. */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+    opacity: var(--grain);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      transition-delay: 0ms !important;
+    }
+  }
+}
+
+/* ==========================================================================
+   Komponen
+   ========================================================================== */
+@layer components {
+  .shell { @apply mx-auto w-full max-w-shell px-5 md:px-8; }
+
+  /* Tautan bergaris bawah yang "tergambar" saat hover */
+  .u-link {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+    transition: background-size 0.35s theme('transitionTimingFunction.out');
+  }
+  .u-link:hover, .u-link:focus-visible { background-size: 100% 1px; }
+
+  /* Skeleton */
+  .skel { @apply relative overflow-hidden rounded-md bg-mist; }
+  .skel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgb(var(--surface) / 0.7), transparent);
+    animation: shimmer 1.6s infinite;
+  }
+
+  /* Odometer */
+  .odo { display: inline-flex; height: 1em; overflow: hidden; line-height: 1; font-variant-numeric: tabular-nums; }
+  .odo__col { display: block; height: 1em; overflow: hidden; }
+  .odo__strip {
+    display: flex;
+    flex-direction: column;
+    transform: translate3d(0, calc(var(--d, 0) * -1em), 0);
+    transition: transform 1.7s theme('transitionTimingFunction.out');
+    will-change: transform;
+  }
+  .odo__strip > span { display: block; height: 1em; text-align: center; }
+  .odo__sep { display: block; height: 1em; }
+
+  /* Marquee */
+  .marquee-mask {
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+  .marquee-track:hover { animation-play-state: paused; }
+  .outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1px rgb(var(--ink) / 0.5);
+    transition: color 0.4s, -webkit-text-stroke-color 0.4s;
+  }
+  .outline-text:hover { color: rgb(var(--ink)); }
+
+  /* Slider halaman PDF */
+  .pdf-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 22px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .pdf-range::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgb(var(--brand)) var(--p, 0%), rgb(var(--line)) var(--p, 0%));
+  }
+  .pdf-range::-moz-range-track { height: 4px; border-radius: 999px; background: rgb(var(--line)); }
+  .pdf-range::-moz-range-progress { height: 4px; border-radius: 999px; background: rgb(var(--brand)); }
+  .pdf-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px; margin-top: -7px;
+    border-radius: 6px;
+    background: rgb(var(--surface));
+    border: 2px solid rgb(var(--brand));
+    box-shadow: 0 2px 6px rgb(10 32 24 / 0.25);
+    transition: transform 0.2s;
+  }
+  .pdf-range::-moz-range-thumb {
+    width: 14px; height: 14px; border-radius: 6px;
+    background: rgb(var(--surface)); border: 2px solid rgb(var(--brand));
+  }
+  .pdf-range:active::-webkit-slider-thumb { transform: scale(1.15); }
+
+  /* Dialog bawaan browser */
+  dialog.pui-dialog {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    max-width: none;
+    max-height: none;
+    overflow: visible;
+  }
+  dialog.pui-dialog::backdrop {
+    background: rgb(5 14 11 / 0.62);
+    backdrop-filter: blur(3px);
+  }
+  dialog.pui-dialog[open] { animation: dlg-in 0.32s theme('transitionTimingFunction.out'); }
+  dialog.pui-dialog[open]::backdrop { animation: dlg-fade 0.32s ease-out; }
+  dialog.pui-dialog--drawer[open] { animation: drawer-in 0.38s theme('transitionTimingFunction.out'); }
+  @keyframes dlg-in { from { opacity: 0; transform: translate3d(0, 14px, 0) scale(0.985); } }
+  @keyframes drawer-in { from { opacity: 0; transform: translate3d(32px, 0, 0); } }
+  @keyframes dlg-fade { from { opacity: 0; } }
+
+  /* Tilt dan sorotan kartu: nilai diset lewat ref, tanpa render ulang React */
+  .spot {
+    position: relative;
+    isolation: isolate;
+  }
+  .spot::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.35s;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(var(--accent) / 0.14), transparent 60%);
+  }
+  .spot:hover::before { opacity: 1; }
+  .spot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s;
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgb(var(--accent) / 0.85), transparent 65%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  .spot:hover::after { opacity: 1; }
+
+  /* Adegan 3D folio */
+  .scene3d { perspective: 1500px; perspective-origin: 50% 40%; }
+  .stage3d {
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rx, 6deg)) rotateY(var(--ry, -16deg));
+    transition: transform 0.45s theme('transitionTimingFunction.out');
+  }
+  .p3d { transform-style: preserve-3d; }
+  .folio {
+    background:
+      linear-gradient(155deg, rgb(255 255 255 / 0.13), rgb(255 255 255 / 0.03) 55%),
+      rgb(var(--deep-2) / 0.82);
+    border: 1px solid rgb(255 255 255 / 0.16);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 30px 50px -28px rgb(0 0 0 / 0.65);
+    backface-visibility: hidden;
+  }
+  /* Perangkat sentuh tidak punya kursor, jadi folio berayun sendiri. */
+  .sway { animation: sway 14s ease-in-out infinite; }
+  @media (hover: hover) and (pointer: fine) {
+    .sway { animation: none; }
+  }
+  @keyframes sway {
+    0%, 100% { transform: rotateY(-10deg) rotateX(4deg); }
+    50% { transform: rotateY(10deg) rotateX(-2deg); }
+  }
+  @keyframes rise { from { opacity: 0; transform: translate3d(0, 14px, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
+  @keyframes shimmer { 100% { transform: translateX(100%); } }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+
+  /* Teks kaya: dipakai halaman publik (.rich) dan editor admin (.rich-editor .ProseMirror) */
+  .rich, .rich-editor .ProseMirror { font-size: 1.0625rem; line-height: 1.8; color: rgb(var(--ink) / 0.9); }
+  .rich > * + *, .rich-editor .ProseMirror > * + * { margin-top: 1.2em; }
+  .rich h2, .rich-editor .ProseMirror h2 { font-family: theme('fontFamily.display'); font-size: 1.75rem; line-height: 1.2; font-weight: 500; margin-top: 1.9em; color: rgb(var(--ink)); }
+  .rich h3, .rich-editor .ProseMirror h3 { font-family: theme('fontFamily.display'); font-size: 1.4rem; line-height: 1.25; font-weight: 500; margin-top: 1.6em; color: rgb(var(--ink)); }
+  .rich h4, .rich-editor .ProseMirror h4 { font-size: 1.0625rem; font-weight: 600; margin-top: 1.4em; color: rgb(var(--ink)); }
+  .rich ul, .rich-editor .ProseMirror ul { list-style: disc; padding-left: 1.4em; }
+  .rich ol, .rich-editor .ProseMirror ol { list-style: decimal; padding-left: 1.5em; }
+  .rich li + li, .rich-editor .ProseMirror li + li { margin-top: 0.4em; }
+  .rich li > p, .rich-editor .ProseMirror li > p { margin: 0; }
+  .rich blockquote, .rich-editor .ProseMirror blockquote {
+    border-left: 3px solid rgb(var(--accent)); padding-left: 1.1em; font-family: theme('fontFamily.display');
+    font-size: 1.25rem; line-height: 1.5; color: rgb(var(--ink));
+  }
+  .rich a, .rich-editor .ProseMirror a { color: rgb(var(--brand)); text-decoration: underline; text-underline-offset: 3px; }
+  .rich code, .rich-editor .ProseMirror code { font-family: theme('fontFamily.mono'); font-size: 0.9em; background: rgb(var(--mist)); padding: 0.1em 0.35em; border-radius: 6px; }
+  .rich pre, .rich-editor .ProseMirror pre { background: rgb(var(--deep)); color: #e8efe9; padding: 1em 1.2em; border-radius: 16px; overflow-x: auto; font-size: 0.9375rem; line-height: 1.6; }
+  .rich pre code, .rich-editor .ProseMirror pre code { background: none; padding: 0; color: inherit; }
+  .rich img, .rich-editor .ProseMirror img { border-radius: 16px; max-width: 100%; height: auto; display: block; }
+  .rich hr, .rich-editor .ProseMirror hr { border: 0; border-top: 1px solid rgb(var(--line)); margin: 2em 0; }
+  .rich-editor .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder); float: left; height: 0; pointer-events: none; color: rgb(var(--muted) / 0.7);
+  }
+  .rich-editor .ProseMirror-selectednode { outline: 2px solid rgb(var(--brand)); outline-offset: 2px; }
+
+  /* Jejak tinta pada garis grafik */
+  .stroke-draw { stroke-dasharray: var(--len, 400); stroke-dashoffset: var(--len, 400); }
+  .stroke-draw.is-on { animation: draw 1.6s theme('transitionTimingFunction.out') forwards; }
+}
+
+@layer utilities {
+  .tabular { font-variant-numeric: tabular-nums; }
+  .pb-safe { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+}
