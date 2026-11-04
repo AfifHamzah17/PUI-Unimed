@@ -8,7 +8,7 @@
 import { createTTLCache } from '../lib/memo.js';
 import { auth } from './auth.js';
 
-const BASE = (import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'https://pui-backend-255264373167.asia-southeast2.run.app/' : '')).replace(/\/$/, '');
+const BASE = 'https://pui-backend-255264373167.asia-southeast2.run.app'
 if (!BASE) console.error('VITE_API_URL belum diisi: situs tidak bisa memuat data. Isi di pengaturan environment lalu bangun ulang.');
 
 export class ApiError extends Error {
