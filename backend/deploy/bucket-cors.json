@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["__FRONTEND_ORIGIN__"],
+    "method": ["PUT", "GET", "HEAD"],
+    "responseHeader": ["Content-Type", "x-goog-content-length-range"],
+    "maxAgeSeconds": 3600
+  }
+]
